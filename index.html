@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<canvas id="canvas" width="500px" height="500px"></canvas>
+		<script type="text/javascript">
+			function init(){
+				var canvas = document.getElementById("canvas");
+				var context = canvas.getContext("2d");
+				context.save();
+				context.clearRect(0,0,500,500);
+				//绘制外边的圆
+				context.beginPath();
+				context.arc(canvas.width/2,canvas.height/2,150,0,2*Math.PI,false);
+				context.lineWidth = 8;
+				context.strokeStyle = "#4A708B"
+				context.closePath();
+				context.fillStyle = "rgba(220 ,220 ,220,0.2)";
+				context.fill();
+				context.stroke();
+				context.restore();
+				//绘制小时的刻度
+				for (var i=1;i<=12;i++) {
+					context.save();
+					context.beginPath();
+					context.translate(250,250)
+					context.rotate(i*30*Math.PI/180);
+					context.moveTo(125,0);
+					context.lineTo(135,0);
+					context.lineWidth = 4;
+					context.font = "14px 微软雅黑 "
+					context.fillStyle = "#4A708B"
+					context.fillText(i,-7,-110);
+					context.closePath();
+					context.stroke();
+					context.restore();
+				}
+				//绘制分钟的刻度
+				for (var i=0;i<60;i++) {
+					if(i%5!=0){					
+						context.save();
+						context.beginPath();
+						context.translate(250,250)
+						context.rotate(i*6*Math.PI/180);
+						context.moveTo(132,0);
+						context.lineTo(135,0);
+						context.lineWidth = 4;
+						context.closePath();
+						context.stroke()
+						context.restore();
+					}
+				}
+				var d = new Date();
+				var hour = d.getHours();
+				var min = d.getMinutes();
+				var sec = d.getSeconds();
+				//时针
+				if(hour>12){
+					hour -= 12;
+				}
+				context.save();
+				context.translate(250,250)
+				context.rotate((hour*30-90)*Math.PI/180);
+				context.lineWidth = 6;
+				context.strokeStyle = "#4F4F4F";
+				context.beginPath();
+				context.moveTo(-8,0);
+				context.lineTo(60,0);
+				context.closePath();
+				context.stroke();
+				context.restore();
+				//分针
+				context.save();
+				context.translate(250,250)
+				context.rotate( (min*6-90)*Math.PI/180 );
+				context.lineWidth = 5;
+				context.strokeStyle = "#29A8DE";
+				context.beginPath();
+				context.moveTo(-10,0);
+				context.lineTo(75,0);
+				context.closePath();
+				context.stroke();
+				context.restore();
+				//秒针
+				context.save();
+				context.translate(250,250)
+				context.rotate((sec*6-90)*Math.PI/180);
+				context.lineWidth = 3;
+				context.strokeStyle = "#CD5555";
+				context.beginPath();
+				context.moveTo(-15,0);
+				context.lineTo(105,0);
+				context.closePath();
+				context.stroke();
+				context.restore();
+				
+			}
+			function clock(){
+				init();
+				setInterval(init,1000)
+			}
+			clock();
+		</script>
+	</body>
+	
+</html>
